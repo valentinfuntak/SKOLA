@@ -59,7 +59,9 @@ class _HomePageState extends State<HomePage> {
                       arguments: nameController.text);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Molimo unesite ime!')),
+                    const SnackBar(
+                        content: Text('Unesite ime!'),
+                        backgroundColor: Colors.red),
                   );
                 }
               },
@@ -71,7 +73,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
 
 //KALKULATOR
 class CalculatorPage extends StatefulWidget {
@@ -86,8 +87,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
   final TextEditingController brojController = TextEditingController();
   final TextEditingController dioController = TextEditingController();
   final TextEditingController ukupnoController = TextEditingController();
-  final TextEditingController pocetnaVrijednostController = TextEditingController();
-  final TextEditingController krajnjaVrijednostController = TextEditingController();
+  final TextEditingController pocetnaVrijednostController =
+      TextEditingController();
+  final TextEditingController krajnjaVrijednostController =
+      TextEditingController();
 
   double? rezultat1;
   double? rezultat2;
@@ -110,7 +113,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
             icon: const Icon(Icons.logout),
             label: const Text('Odjavi se'),
             style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white, backgroundColor: Colors.red, // Boja teksta
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.red, // Boja teksta
             ),
           ),
         ],
@@ -175,8 +179,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 setState(() {
                   errorMessage = null;
                   try {
-                    double pocetna = double.parse(pocetnaVrijednostController.text);
-                    double krajnja = double.parse(krajnjaVrijednostController.text);
+                    double pocetna =
+                        double.parse(pocetnaVrijednostController.text);
+                    double krajnja =
+                        double.parse(krajnjaVrijednostController.text);
                     rezultat3 = ((krajnja - pocetna) / pocetna) * 100;
                   } catch (e) {
                     errorMessage = 'Unesite brojčane vrijednosti';
@@ -185,13 +191,14 @@ class _CalculatorPageState extends State<CalculatorPage> {
               },
               rezultat3,
               isPercentage: true,
-              promjena: true,  // Dodajemo novi parametar za treću formu
+              promjena: true, // Dodajemo novi parametar za treću formu
             ),
             if (errorMessage != null) ...[
               const SizedBox(height: 16),
               Text(
                 errorMessage!,
-                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.red, fontWeight: FontWeight.bold),
               ),
             ],
           ],
@@ -209,7 +216,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
     VoidCallback onCalculate,
     double? result, {
     bool isPercentage = false,
-    bool promjena = false,  
+    bool promjena = false,
   }) {
     return Card(
       elevation: 4,
@@ -234,7 +241,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Text(promjena ? "na" : (isPercentage ? "od" : "% od")), // Promjena teksta
+                Text(promjena
+                    ? "na"
+                    : (isPercentage ? "od" : "% od")), // Promjena teksta
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
@@ -259,7 +268,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   child: Text(buttonText),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(8),
