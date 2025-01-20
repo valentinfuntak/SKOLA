@@ -22,25 +22,18 @@ export default function Home(props) {
     return (
         <>
             <Show when={!session()}>
-                <div class="bg-yellow-400 text-black text-3xl p-10 rounded">
+                <div class="bg-red-400 text-white text-3xl p-10 rounded">
                     Morate se prijaviti da biste vidjeli projekte!
                 </div>
             </Show>
             <Show when={session() && projects()}>
-                <For each={projects()} fallback={<div class="bg-gray-300 text-black text-3xl p-10 rounded">Nema projekata!</div>}>
-                    {(item) => (
-                        <div class="bg-teal-500 text-black text-3xl p-10 mb-5 rounded flex flex-col justify-between h-48">
-                            <div class="text-left">{item.name}</div>
-                            <div class="text-right">
-                                <A
-                                    href={`/tasks/${item.id}`}
-                                    class="bg-indigo-600 text-white text-xl px-6 py-2 rounded shadow-lg hover:bg-indigo-700"
-                                >
-                                    Prikaži
-                                </A>
-                            </div>
-                        </div>
-                    )}
+                <For each={projects()} fallback={<div>Nema projekata.</div>}>
+                    {(item) => <div class="flex flex-col gap-2 items-end bg-blue-400 text-white p-2 rounded mb-5">
+                        <div class="place-self-start text-xl">{item.name}</div>
+                        <A href={`/tasks/${item.id}`} class="bg-white text-blue-400 p-2 rounded text-sm">
+                            Prikaži
+                        </A>
+                    </div>}
                 </For>
             </Show>
         </>
