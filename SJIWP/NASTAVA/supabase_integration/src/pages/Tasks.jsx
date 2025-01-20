@@ -96,7 +96,7 @@ export default function Tasks(props) {
             <Show when={project()}>
                 <div class="text-3xl font-bold">Dobrodošli na projekt: {project().name}</div>
                 <Show when={isOwner()}>
-                    <div></div>Vi ste vlasnik projekta, možete dodavati zadatke.
+                    <div class="text-green-700">Vi ste vlasnik projekta, možete dodavati zadatke.</div>
                     <form onSubmit={formSubmit}>
                         <div class="p-2 flex flex-col gap-1">
                             <label>Naziv</label>
