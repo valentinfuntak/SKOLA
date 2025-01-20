@@ -111,7 +111,7 @@ export default function Tasks(props) {
                 <For each={tasks()} fallback={<div class="bg-gray-300 text-black text-3xl p-10 rounded">Nema zadataka!</div>}>
                     {(item) => (
                         <div class="flex flex-col gap-2 items-end bg-blue-400 text-white p-2 rounded mb-5">
-                            <div class="text-left">{item.name}</div>
+                            <div class="place-self-start text-xl">{item.name}</div>
                             <Show when={item.owner_id}>
 
                             </Show>
