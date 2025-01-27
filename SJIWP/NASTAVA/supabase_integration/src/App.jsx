@@ -30,7 +30,7 @@ function Layout(props) {
     <div class="p-4 flex flex-col gap-4">
 
       <div class="flex flex-wrap align-top items-start gap-2">
-        <div class=" text-black flex-1 text-3xl text-neutral-500 uppercase">
+        <div class="  flex-1 text-3xl text-neutral-700 uppercase">
           {appName}
         </div>
         <div class="flex-none flex flex-wrap gap-2">
