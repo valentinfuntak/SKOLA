@@ -10,6 +10,11 @@ export default function Tasks(props) {
     const [project, setProject] = createSignal(null);
     const [isOwner, setOwner] = createSignal(false);
     const [tasks, setTasks] = createSignal();
+    const [descriptionVisible, setDescriptionVisible] = createSignal(false);
+
+    function toggleDescription() {
+        setDescriptionVisible(old => !old);
+    }
 
     onMount(async () => {
         //console.log(params.id);
@@ -28,7 +33,7 @@ export default function Tasks(props) {
 
         //console.log(data);
 
-        loadTasks();
+        await loadTasks();
     });
 
     async function formSubmit(event) {
@@ -47,8 +52,21 @@ export default function Tasks(props) {
         if (error) {
             alert("Spreamnje nije uspjelo.");
         } else {
-            loadTasks();
+            await loadTasks();
             event.target.reset();
+        }
+    }
+
+    async function deleteTask(taskId) {
+
+        const { error } = await supabase
+            .from("tasks")
+            .delete()
+            .eq("id", taskId);
+        if (error) {
+            alert("Operacija nije uspjela.");
+        } else {
+            await loadTasks();
         }
     }
 
@@ -72,7 +90,7 @@ export default function Tasks(props) {
         if (error) {
             alert("Operacija nije uspjela.");
         } else {
-            loadTasks();
+            await loadTasks();
         }
     }
 
@@ -87,7 +105,7 @@ export default function Tasks(props) {
         if (error) {
             alert("Operacija nije uspjela.");
         } else {
-            loadTasks();
+            await loadTasks();
         }
     }
 
@@ -99,8 +117,8 @@ export default function Tasks(props) {
                     <div class="text-green-700">Vi ste vlasnik projekta, možete dodavati zadatke.</div>
                     <form onSubmit={formSubmit}>
                         <div class="p-2 flex flex-col gap-1">
-                            <label>Naziv</label>
-                            <input type="text" name="name" required="true" />
+                            <label>Zadatak</label>
+                            <input type="text" name="name" required="true" placeholder="Unesite zadatak" />
                         </div>
 
                         <div class="p-2 flex flex-col gap-1">
@@ -108,6 +126,14 @@ export default function Tasks(props) {
                         </div>
                     </form>
                 </Show>
+
+                <div>
+                    <button class="bg-indigo-600 text-white p-2 rounded text-sm mb-2" onClick={() => toggleDescription()}> Prikaži/sakrij opis</button>
+                </div>
+                <Show when={descriptionVisible()}>
+                    <div class="mb-4">{project().description}</div>
+                </Show>
+
                 <For each={tasks()} fallback={<div class="bg-gray-300 text-black text-3xl p-10 rounded">Nema zadataka!</div>}>
                     {(item) => (
                         <div class="flex flex-col gap-2 items-end bg-slate-600 text-white p-2 rounded mb-5">
@@ -122,14 +148,19 @@ export default function Tasks(props) {
                                     Preuzmi
                                 </button>
                             </Show>
-                            <Show when={item.done === false && item.owner_id === session().user.id}>
-                                    <button
-                                        on:click={() => markDone(item.id)}
-                                        class="bg-indigo-600 text-white p-2 rounded text-sm">
-                                        Završi
-                                    </button>
+                            <Show when={isOwner() && item.done !== true}>
+                                <button onClick={() => deleteTask(item.id)} class="bg-red-600 text-white p-2 rounded text-sm">
+                                    Obriši
+                                </button>
                             </Show>
-                            <Show when={ item.done }>
+                            <Show when={item.done === false && item.owner_id === session().user.id}>
+                                <button
+                                    on:click={() => markDone(item.id)}
+                                    class="bg-indigo-600 text-white p-2 rounded text-sm">
+                                    Završi
+                                </button>
+                            </Show>
+                            <Show when={item.done}>
                                 <div class="text-right">Zadatak je završen.</div>
                             </Show>
                         </div>
