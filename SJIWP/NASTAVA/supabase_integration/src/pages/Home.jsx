@@ -28,7 +28,7 @@ export default function Home(props) {
             .from("projects")
             .delete()
             .eq("id", projectId);
-        if (!error) {
+        if (error) {
             alert("Operacija nije uspjela.");
         } else {
             await loadProjects();
