@@ -50,7 +50,7 @@ export default function Home(props) {
                         <A href={`/tasks/${item.id}`} class="bg-indigo-600 text-white p-2 rounded text-sm">
                             Prikaži
                         </A>
-                        <Show when={item.tasks[0].cont === 0}>
+                        <Show when={item.tasks[0].count === 0}>
                             <button class="bg-red-600 text-white p-2 rounded text-sm" onClick={() => deleteProject(item.id)} >Briši</button>
                         </Show>
                     </div>}
