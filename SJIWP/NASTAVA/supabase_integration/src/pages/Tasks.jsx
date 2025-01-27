@@ -116,30 +116,35 @@ export default function Tasks(props) {
                 <Show when={isOwner()}>
                     <div class="text-green-700">Vi ste vlasnik projekta, možete dodavati zadatke.</div>
                     <form onSubmit={formSubmit}>
-                        <div class="p-2 flex flex-col gap-1">
-                            <label>Zadatak</label>
-                            <input type="text" name="name" required="true" placeholder="Unesite zadatak" />
-                        </div>
-
-                        <div class="p-2 flex flex-col gap-1">
-                            <input type="submit" value="Pošalji" class="bg-slate-600 text-white p-2 rounded" />
+                        <div class="p-2 mb-3 mt-2 rounded flex flex-col gap-1 bg-slate-600 text-white">
+                            <label class="text-xl">Zadatak</label>
+                            <input class="text-black" type="text" name="name" required="true" placeholder="Unesite zadatak" />
+                            <div class="p-2 flex flex-col gap-1">
+                                <input type="submit" value="Pošalji" class="bg-indigo-600 text-white p-2 rounded" />
+                            </div>
                         </div>
                     </form>
                 </Show>
 
                 <div>
-                    <button class="bg-indigo-600 text-white p-2 rounded text-sm mb-2" onClick={() => toggleDescription()}> Prikaži/sakrij opis</button>
+                    <button class="bg-indigo-600 text-white p-2 rounded w-full text-l mb-2" onClick={() => toggleDescription()}> Prikaži/sakrij opis</button>
                 </div>
                 <Show when={descriptionVisible()}>
-                    <div class="mb-4">{project().description}</div>
+                    <div class="bg-yellow-600 rounded p-4 mb-2">
+                        <div class="text-2xl text-white">Opis</div>
+                        <div class="mb-4 text-xl text-white">{project().description}</div>
+                    </div>
                 </Show>
 
                 <For each={tasks()} fallback={<div class="bg-gray-300 text-black text-3xl p-10 rounded">Nema zadataka!</div>}>
                     {(item) => (
                         <div class="flex flex-col gap-2 items-end bg-slate-600 text-white p-2 rounded mb-5">
                             <div class="place-self-start text-xl text-white">{item.name}</div>
-                            <Show when={item.owner_id}>
-
+                            <Show when={item.owner_id && item.owner_id !== session().user.id}>
+                                <div>Zadatak preuzet</div>
+                            </Show>
+                            <Show when={item.owner_id && item.owner_id === session().user.id}>
+                                <div>Vi ste ovo preuzeli</div>
                             </Show>
                             <Show when={!item.owner_id}>
                                 <button
@@ -156,7 +161,7 @@ export default function Tasks(props) {
                             <Show when={item.done === false && item.owner_id === session().user.id}>
                                 <button
                                     on:click={() => markDone(item.id)}
-                                    class="bg-indigo-600 text-white p-2 rounded text-sm">
+                                    class="bg-green-600 text-white p-2 rounded text-sm">
                                     Završi
                                 </button>
                             </Show>

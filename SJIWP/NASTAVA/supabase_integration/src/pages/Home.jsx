@@ -51,7 +51,7 @@ export default function Home(props) {
                             Prikaži
                         </A>
                         <Show when={item.tasks[0].cont === 0}>
-                            <button class="bg-indigo-600 text-white p-2 rounded text-sm">Briši</button>
+                            <button class="bg-red-600 text-white p-2 rounded text-sm">Briši</button>
                         </Show>
                     </div>}
                 </For>
