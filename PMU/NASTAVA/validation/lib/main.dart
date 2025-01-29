@@ -45,6 +45,14 @@ class _MyCustomFormState extends State<MyCustomForm> {
               return null;
             },
           ),
+          TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty || value == "5") {
+                return "Molim unesite  ispravnu vrijednost!";
+              }
+              return null;
+            },
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: ElevatedButton(
