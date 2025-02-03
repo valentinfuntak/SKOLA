@@ -10,7 +10,7 @@ export default function MainLayout(props) {
       <div class="p-4 flex flex-col gap-4">
   
         <div class="flex flex-wrap align-top items-start gap-2">
-          <div class="  flex-1 text-3xl text-neutral-700 uppercase">
+          <div class="  flex-1 text-3xl text-white uppercase">
             {appName}
           </div>
           <div class="flex-none flex flex-wrap gap-2">
@@ -27,7 +27,7 @@ export default function MainLayout(props) {
           {props.children}
         </div>
   
-        <div class="text-center text-xs text-neutral-500">
+        <div class="text-center text-xs text-white">
           Sva prava pridržana {new Date().getFullYear()}. Valentin Funtak
         </div>
       </div>
