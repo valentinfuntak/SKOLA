@@ -15,10 +15,10 @@ export default function MainLayout(props) {
           </div>
           <div class="flex-none flex flex-wrap gap-2">
           <Show when={!session()}>
-            <A href="/signin" class="bg-indigo-600 p-2 rounded hover:bg-red-300">Prijava</A>
+            <A href="/signin" class="bg-indigo-600 p-2 rounded hover:bg-indigo-500">Prijava</A>
           </Show>
           <Show when={session()}>
-            <A href="/signout" class="bg-indigo-600 p-2 rounded hover:bg-red-300">Odjava</A>
+            <A href="/signout" class="bg-indigo-600 p-2 rounded hover:bg-indigo-500">Odjava</A>
           </Show>  
         </div>
         </div>
