@@ -1,11 +1,12 @@
 import { createSignal, createEffect } from "solid-js";
-import supabase from "../backend/Supabase.js";
 import { useAuth } from "../backend/AuthProvider.jsx";
 
 export default function Account() {
     const session = useAuth();
 
     const user = session() ? session().user : null;
+
+    console.log(session().user);
 
     if (!user) {
         return (
@@ -22,6 +23,10 @@ export default function Account() {
 
             <div class="bg-base-300 p-6 rounded-lg">
                 <ul class="space-y-3">
+                    <li class="flex items-center">
+                        <span class="text-lg font-medium w-50">Uloga:</span>
+                        <span class="text-lg text-base-content">{user.role}</span>
+                    </li>
                     <li class="flex items-center">
                         <span class="text-lg font-medium w-50">Email:</span>
                         <span class="text-lg text-base-content">{user.email}</span>
