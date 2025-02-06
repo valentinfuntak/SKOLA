@@ -27,7 +27,7 @@ export default function PortfolioForm() {
                     <div class="mt-4 p-4 flex flex-col gap-4 bg-gray-800 rounded-lg shadow-md">
                         {/* Vlasnik portfolia */}
                         <div class="flex flex-col gap-2">
-                            <label class="text-lg font-semibold text-gray-300">
+                            <label class="text-xl font-semibold text-gray-300">
                                 Vlasnik portfolia:
                             </label>
                             <input
@@ -41,7 +41,7 @@ export default function PortfolioForm() {
 
                         {/* O meni */}
                         <div class="flex flex-col gap-2">
-                            <label class="text-lg font-semibold text-gray-300">O meni</label>
+                            <label class="text-xl font-semibold text-gray-300">O meni</label>
                             <textarea
                                 class="w-full h-40 resize-none bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 maxLength={2000}
@@ -53,7 +53,7 @@ export default function PortfolioForm() {
 
                         {/* Obrazovanje */}
                         <div class="flex flex-col gap-2">
-                            <label class="text-lg font-semibold text-gray-300" for="education">Obrazovanje</label>
+                            <label class="text-xl font-semibold text-gray-300" for="education">Obrazovanje</label>
                             <select name="education" id="education" required class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option class="bg-white text-black" value="">
                                     Odaberite obrazovni program
@@ -69,7 +69,7 @@ export default function PortfolioForm() {
 
                         {/* Certifikati */}
                         <div class="flex flex-col gap-2">
-                            <label class="text-lg font-semibold text-gray-300">
+                            <label class="text-xl font-semibold text-gray-300">
                                 Certifikati
                             </label>
                             <input
@@ -81,9 +81,9 @@ export default function PortfolioForm() {
                             />
                         </div>
 
-                        {/* Tehnologije */}
+                        {/* */}
                         <div class="flex flex-col gap-6 items-start">
-                            <label class="text-lg font-semibold text-gray-300">Tehnologije</label>
+                            <label class="text-xl font-semibold text-gray-300">Tehnologije</label>
 
                             {/* Frontend */}
                             <div class="flex flex-col items-start gap-4">
@@ -141,7 +141,7 @@ export default function PortfolioForm() {
 
                         {/* Iskustvo */}
                         <div class="flex flex-col gap-2">
-                            <label class="text-lg font-semibold text-gray-300">
+                            <label class="text-xl font-semibold text-gray-300">
                                 Iskustvo
                             </label>
                             <input
@@ -155,7 +155,7 @@ export default function PortfolioForm() {
 
                         {/* Projekti */}
                         <div class="flex flex-col gap-2">
-                            <label class="text-lg font-semibold text-gray-300">
+                            <label class="text-xl font-semibold text-gray-300">
                                 Projekti
                             </label>
                             <input
@@ -168,7 +168,7 @@ export default function PortfolioForm() {
 
                         {/* Kontakt */}
                         <div class="flex flex-col gap-2">
-                            <label class="text-lg font-semibold text-gray-300">Kontakt</label>
+                            <label class="text-xl font-semibold text-gray-300">Kontakt</label>
                             <input
                                 type="tel"
                                 name="contact"
