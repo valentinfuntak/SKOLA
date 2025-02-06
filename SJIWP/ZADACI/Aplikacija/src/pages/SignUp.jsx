@@ -5,7 +5,6 @@ import supabase from '../backend/Supabase.js';
 function SignUp(props) {
   const navigate = useNavigate();
 
-  // Koristimo jedan signal za spremanje e-maila i lozinke
   const [result, setResult] = createSignal({
     email: '',
     password: '',

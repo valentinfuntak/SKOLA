@@ -13,7 +13,7 @@ export default function PortfolioForm() {
     const [success, setSuccess] = createSignal(false);
 
     async function formSumbit(event) {
-        // Dodaj logiku za spremanje podataka
+        
     }
 
     return (
