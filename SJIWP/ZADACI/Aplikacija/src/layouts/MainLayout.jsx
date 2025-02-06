@@ -85,7 +85,7 @@ export default function MainLayout(props) {
           <p>Copyright © {new Date().getFullYear()} - All rights reserved by Valentin Funtak</p>
         </aside>
         <nav className="flex justify-center md:justify-end">
-          <a>
+          <a href="https://github.com/valentinfuntak">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="50"
