@@ -1,6 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { useAuth } from "../backend/AuthProvider.jsx";
 
+import Projects from "./Projects.jsx";
+
 export default function Account() {
     const session = useAuth();
 
@@ -18,7 +20,7 @@ export default function Account() {
     }
 
     return (
-        <div class="max-w-4xl mt-11 mx-auto p-6 bg-base-200 rounded-lg shadow-lg">
+        <div class="max-w-4xl mt-11 mb-10 mx-auto p-6 bg-base-200 rounded-lg shadow-lg">
             <h1 class="text-3xl font-bold text-indigo-500 uppercase mb-4">Vaš račun</h1>
 
             <div class="bg-base-300 p-6 rounded-lg">
@@ -41,6 +43,9 @@ export default function Account() {
                     </li>
                 </ul>
             </div>
+
+            <Projects />
+
         </div>
     );
 }
