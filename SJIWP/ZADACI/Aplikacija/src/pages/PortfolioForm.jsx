@@ -30,7 +30,7 @@ import cpp from "../assets/Ikone/GameDev/cp.png";
 import puppeteer from "../assets/Ikone/Automatization/pupe.png";
 
 
-
+//TREBA DODATI VALUE TAKO DA SE U BP ZAPISE U STUPCU 
 
 export default function PortfolioForm() {
     const session = useAuth();
@@ -41,14 +41,38 @@ export default function PortfolioForm() {
         event.preventDefault();
         const formData = new FormData(event.target);
         const owner_id = session().user.id;
-        const technologies = {
-            frontend: formData.get("frontendTechnologies"),
-            backend: formData.get("backendTechnologies"),
-            database: formData.get("databaseTechnologies"),
-            mobile: formData.get("mobileDevTechnologies"),
-            game: formData.get("gameDevTechnologies"),
-            automation: formData.get("automationTechnologies"),
-        };
+        const technologies = {};
+
+        // Provjera za svaki checkbox
+        const frontendTechnologies = formData.getAll("frontendTechnologies");
+        if (frontendTechnologies.length > 0) {
+            technologies.frontend = frontendTechnologies; // Pohranjuje imena tehnologija
+        }
+
+        const backendTechnologies = formData.getAll("backendTechnologies");
+        if (backendTechnologies.length > 0) {
+            technologies.backend = backendTechnologies;
+        }
+
+        const databaseTechnologies = formData.getAll("databaseTechnologies");
+        if (databaseTechnologies.length > 0) {
+            technologies.database = databaseTechnologies;
+        }
+
+        const mobileTechnologies = formData.getAll("mobileDevTechnologies");
+        if (mobileTechnologies.length > 0) {
+            technologies.mobile = mobileTechnologies;
+        }
+
+        const gameTechnologies = formData.getAll("gameDevTechnologies");
+        if (gameTechnologies.length > 0) {
+            technologies.game = gameTechnologies;
+        }
+
+        const automationTechnologies = formData.getAll("automationTechnologies");
+        if (automationTechnologies.length > 0) {
+            technologies.automation = automationTechnologies;
+        }
         const owner = formData.get("author");
         const about = formData.get("about");
         const education = formData.get("education");
@@ -162,13 +186,13 @@ export default function PortfolioForm() {
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">HTML</h1>
                                         <img className="w-15" src={html} alt="HTML" />
-                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" value="HTML" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* CSS */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">CSS</h1>
                                         <img className="w-15" src={css} alt="CSS" />
-                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" value="CSS" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* JavaScript */}
                                     <div className="flex flex-col items-center gap-2">
@@ -217,7 +241,7 @@ export default function PortfolioForm() {
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Node.js</h1>
                                         <img class="w-15" src={nodejs} alt="Node.js" />
-                                        <input type="checkbox" name="backendTechnologies" className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="backendTechnologies" value="Node.js" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Python */}
                                     <div class="flex flex-col items-center gap-2">
