@@ -1,6 +1,6 @@
 import { useNavigate, A } from "@solidjs/router";
 import { createSignal } from 'solid-js';
-import supabase from '../backend/Supabase.js';
+import {supabase} from '../backend/Supabase.js';
 
 function SignUp(props) {
   const navigate = useNavigate();

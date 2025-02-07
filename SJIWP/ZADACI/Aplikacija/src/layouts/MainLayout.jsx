@@ -1,7 +1,7 @@
 import { A, useNavigate } from "@solidjs/router";
 import { useAuth } from "../backend/AuthProvider.jsx";
 import { Show } from "solid-js";
-import supabase from "../backend/Supabase.js";
+import {supabase} from "../backend/Supabase.js";
 
 import userLogo from "../assets/Ikone/user.jpg";
 

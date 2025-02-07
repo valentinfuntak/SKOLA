@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import { useAuth } from "../backend/AuthProvider.jsx";
+import { supabase } from "../backend/Supabase.js";
 
 import html from "../assets/Ikone/Frontend/html.png";
 import css from "../assets/Ikone/Frontend/css-3.png";
@@ -16,7 +17,7 @@ import ruby from "../assets/Ikone/Backend/ruby.png";
 
 import mongodb from "../assets/Ikone/DB/mongodb.png";
 import sql from "../assets/Ikone/DB/sql.png";
-import supabase from "../assets/Ikone/DB/supabase.png";
+import supa from "../assets/Ikone/DB/supabase.png";
 
 import flutter from "../assets/Ikone/Mobile/flutter.png";
 import java from "../assets/Ikone/Mobile/java.png";
@@ -35,13 +36,58 @@ export default function PortfolioForm() {
     const session = useAuth();
     const [success, setSuccess] = createSignal(false);
 
-    async function formSumbit(event) {
+    async function formSubmit(event) {
+        setSuccess(false);
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const owner_id = session().user.id;
+        const technologies = {
+            frontend: formData.get("frontendTechnologies"),
+            backend: formData.get("backendTechnologies"),
+            database: formData.get("databaseTechnologies"),
+            mobile: formData.get("mobileDevTechnologies"),
+            game: formData.get("gameDevTechnologies"),
+            automation: formData.get("automationTechnologies"),
+        };
+        const owner = formData.get("author");
+        const about = formData.get("about");
+        const education = formData.get("education");
+        const experience = formData.get("experience");
+        const projects = formData.get("projects");
+        const contact = formData.get("contact");
 
+        const { error } = await supabase
+            .from("portfolios")
+            .insert({
+                owner_id: owner_id,
+                owner: owner,
+                about: about,
+                education: education,
+                technologies: technologies,
+                experience: experience,
+                projects: projects,
+                contact: contact
+            });
+        if (error) {
+            console.error("Error during insert:", error);
+            alert("Spremanje nije uspjelo.");
+        } else {
+            setSuccess(true);
+            event.target.reset();
+        }
     }
+
 
     return (
         <>
-            <form onSubmit={formSumbit()}>
+
+            <Show when={success()}>
+                <div class="bg-green-400 text-white p-2 rounded my-5">
+                    Portfolio uspješno generiran!
+                </div>
+            </Show>
+
+            <form onSubmit={formSubmit}>
                 <div class="w-full bg-gray-900 rounded-2xl p-7 mt-8 mb-5 shadow-xl">
                     <div class="mx-auto p-5 bg-gray-800 rounded-lg shadow-lg text-3xl text-center text-indigo-400 uppercase font-semibold tracking-wider">
                         Portfolio
@@ -56,7 +102,7 @@ export default function PortfolioForm() {
                             <input
                                 type="text"
                                 name="author"
-                                required
+                                required="true"
                                 placeholder="Unesite ime i prezime"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
@@ -69,7 +115,7 @@ export default function PortfolioForm() {
                                 class="w-full h-40 resize-none bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 maxLength={2000}
                                 name="about"
-                                required
+                                required="true"
                                 placeholder="Napišite nešto o sebi"
                             />
                         </div>
@@ -98,13 +144,13 @@ export default function PortfolioForm() {
                             <input
                                 type="text"
                                 name="certificate"
-                                required
+                                required="true"
                                 placeholder="Unesite naziv certifikata"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
 
-                        {/* Tehnologije */} 
+                        {/* Tehnologije */}
                         <div class="flex flex-col gap-6 items-start">
                             <label class="text-xl font-semibold text-gray-300">Tehnologije</label>
 
@@ -116,49 +162,49 @@ export default function PortfolioForm() {
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">HTML</h1>
                                         <img className="w-15" src={html} alt="HTML" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* CSS */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">CSS</h1>
                                         <img className="w-15" src={css} alt="CSS" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* JavaScript */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">JavaScript</h1>
                                         <img className="w-15" src={js} alt="JavaScript" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* TypeScript */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">TypeScript</h1>
                                         <img className="w-15" src={typescript} alt="TypeScript" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Solid */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">Solid</h1>
                                         <img className="w-15" src={solid} alt="solid" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* React */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">React</h1>
                                         <img className="w-15" src={react} alt="react" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Vue */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">Vue</h1>
                                         <img className="w-15" src={vue} alt="vue" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Angular */}
                                     <div className="flex flex-col items-center gap-2">
                                         <h1 className="text-lg">Angular</h1>
                                         <img className="w-15" src={angular} alt="angular" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="frontendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                 </div>
                             </div>
@@ -171,19 +217,19 @@ export default function PortfolioForm() {
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Node.js</h1>
                                         <img class="w-15" src={nodejs} alt="Node.js" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="backendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Python */}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Python</h1>
                                         <img class="w-15" src={python} alt="python" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="backendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Ruby */}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Ruby</h1>
                                         <img class="w-15" src={ruby} alt="ruby" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="backendTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                 </div>
                             </div>
@@ -196,19 +242,19 @@ export default function PortfolioForm() {
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">SQL</h1>
                                         <img class="w-15" src={sql} alt="sql" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="databaseTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* MongoDB */}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">MongoDB</h1>
                                         <img class="w-15" src={mongodb} alt="mongodb" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="databaseTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Sql */}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Supabase</h1>
-                                        <img class="w-15" src={supabase} alt="supabase" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <img class="w-15" src={supa} alt="supabase" />
+                                        <input type="checkbox" name="databaseTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                 </div>
                             </div>
@@ -221,19 +267,19 @@ export default function PortfolioForm() {
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Flutter</h1>
                                         <img class="w-15" src={flutter} alt="flutter" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="mobileTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Java */}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Java</h1>
                                         <img class="w-15" src={java} alt="Java" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="mobileTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Swift */}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Swift</h1>
                                         <img class="w-15" src={swift} alt="swift" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="mobileTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                 </div>
                             </div>
@@ -246,19 +292,19 @@ export default function PortfolioForm() {
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">GDScript</h1>
                                         <img class="w-15" src={gdscript} alt="gdscript" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="gameTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* Python */}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">C++</h1>
                                         <img class="w-15" src={cpp} alt="cpp" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="gameTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                     {/* C*/}
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">C#</h1>
                                         <img class="w-15" src={csharp} alt="csharp" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="gameTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                 </div>
                             </div>
@@ -271,13 +317,11 @@ export default function PortfolioForm() {
                                     <div class="flex flex-col items-center gap-2">
                                         <h1 class="text-lg">Puppeteer</h1>
                                         <img class="w-15" src={puppeteer} alt="puppeteer" />
-                                        <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                                        <input type="checkbox" name="automationTechnologies" className="checkbox checkbox-primary" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
 
                         {/* Iskustvo */}
                         <div class="flex flex-col gap-2">
@@ -287,7 +331,7 @@ export default function PortfolioForm() {
                             <input
                                 type="text"
                                 name="experience"
-                                required
+                                required="true"
                                 placeholder="Unesite iskustvo"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
@@ -302,7 +346,7 @@ export default function PortfolioForm() {
                                 type="text"
                                 name="projects"
                                 placeholder="Navedite projekte"
-                                required
+                                required="true"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
@@ -313,7 +357,7 @@ export default function PortfolioForm() {
                             <input
                                 type="tel"
                                 name="contact"
-                                required
+                                required="true"
                                 placeholder="Unesite kontakt broj"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />

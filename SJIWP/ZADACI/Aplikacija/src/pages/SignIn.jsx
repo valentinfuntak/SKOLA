@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js';
 import { useNavigate } from '@solidjs/router'; 
-import supabase from "../backend/Supabase.js";
+import {supabase} from "../backend/Supabase.js";
 
 function Prijava(props) {
     const [email, setEmail] = createSignal('');

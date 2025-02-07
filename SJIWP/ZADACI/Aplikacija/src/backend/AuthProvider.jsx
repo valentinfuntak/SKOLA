@@ -1,6 +1,9 @@
 import { createContext, createSignal, useContext, Show } from "solid-js";
 import { supabase } from "./Supabase.js";
 
+const url = import.meta.env.VITE_SUPABASE_URL;
+const apiKey = import.meta.env.VITE_SUPABASE_API_KEY;
+
 // context
 const AuthContext = createContext();
 
@@ -16,6 +19,7 @@ export function AuthProvider(props) {
 
     supabase.auth.onAuthStateChange((event, session) => {
         console.log(event, session);
+        console.log(apiKey, url);
 
         if (event === "SIGNED_IN" || event === "USER_UPDATED") {
             setSession(session);
