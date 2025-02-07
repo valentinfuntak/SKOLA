@@ -163,7 +163,6 @@ export default function PortfolioForm() {
                                 name="projects"
                                 placeholder="Navedite projekte"
                                 required
-                                placeholder=" Navedite projekte"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
