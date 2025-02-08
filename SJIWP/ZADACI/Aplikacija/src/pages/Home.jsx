@@ -1,5 +1,8 @@
+import PortfolioList from "./PortfolioList"; 
+
 export default function Home() {
   return (
+    <>
     <div class="hero min-h-screen bg-base-100">
       <div class="hero-content text-center">
         <div class="max-w-md">
@@ -14,5 +17,7 @@ export default function Home() {
         </div>
       </div>
     </div>
+    <PortfolioList />
+    </>
   );
 }

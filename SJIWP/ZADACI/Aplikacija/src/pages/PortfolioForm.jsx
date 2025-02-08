@@ -376,6 +376,16 @@ export default function PortfolioForm() {
                                 Kreirajte portfolio
                             </button>
                         </div>
+                        <div class="mt-4">
+                            <a href="/portfoliolist">
+                            <button
+                                type="submit"
+                                class="w-full bg-orange-600 text-white p-3 rounded-lg hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            >
+                                Pregled portfolia
+                            </button>
+                            </a>
+                        </div>
                         <Show when={success()}>
                             <div class="bg-green-400 text-white p-4 rounded my-5">
                                 Portfolio uspješno generiran!

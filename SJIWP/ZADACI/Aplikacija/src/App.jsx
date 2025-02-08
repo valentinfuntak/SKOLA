@@ -24,6 +24,7 @@ export default function App() {
         <Route path="/settings" component={() => (<MainLayout><Settings /></MainLayout>)} />
         <Route path="/portfolioform" component={() => (<MainLayout><PortfolioForm /></MainLayout>)} />
         <Route path="/portfoliolist" component={() => (<MainLayout><PortfolioList /></MainLayout>)} />
+        <Route path="/portfoliolist/:id" component={() => (<MainLayout><PortfolioList /></MainLayout>)} />
       </HashRouter>
     </AuthProvider>
   );
