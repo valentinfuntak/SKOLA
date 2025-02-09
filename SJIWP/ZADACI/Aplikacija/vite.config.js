@@ -10,4 +10,5 @@ export default defineConfig({
   build: {
     target: 'esnext',
   },
+  base: process.env.NODE_ENV === "production" ? "SKOLA/SJIWP/ZADACI/Aplikacija/" : "/"
 });
