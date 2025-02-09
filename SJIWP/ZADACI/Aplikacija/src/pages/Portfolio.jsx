@@ -21,20 +21,18 @@ export default function Portfolio() {
             .from("portfolios")
             .select("*")
             .eq("id", id)  // Filtriranje po ID-u
-            .single(); // Očekujemo samo jedan rezultat
+            .single();
         if (error) {
             alert("Operacija nije uspjela.");
             console.log(error);
         } else {
             setPortfolio(data);
-            // Provjerite vlasništvo portfolia
             if (session()) {
                 setIsOwner(data.owner_id === session().user.id);
             }
         }
     }
 
-    // Funkcija za brisanje portfolia
     async function deletePortfolio(id) {
         if (!session()) {
             setErrorMessage("Potrebna prijava!");
@@ -50,8 +48,7 @@ export default function Portfolio() {
                 alert("Operacija nije uspjela.");
                 console.log(error);
             } else {
-                // Nakon brisanja, možete preusmjeriti ili obrisati podatke
-                navigate("/portfolio-list");  // Ili vratiti na listu portfolia
+                navigate("/portfolio-list"); 
             }
         }
     }

@@ -29,9 +29,6 @@ import cpp from "../assets/Ikone/GameDev/cp.png";
 
 import puppeteer from "../assets/Ikone/Automatization/pupe.png";
 
-
-//TREBA DODATI VALUE TAKO DA SE U BP ZAPISE U STUPCU 
-
 export default function PortfolioForm() {
     const session = useAuth();
     const [success, setSuccess] = createSignal(false);
@@ -115,6 +112,7 @@ export default function PortfolioForm() {
 
                     <div class="mt-4 p-4 flex flex-col gap-4 bg-gray-800 rounded-lg shadow-md">
 
+                        {/* Naslov portfolia */}
                         <div class="flex flex-col gap-2">
                             <label class="text-xl font-semibold text-gray-300">
                                 Naslov portfolia:

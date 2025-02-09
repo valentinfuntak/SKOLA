@@ -25,18 +25,16 @@ export default function PortfolioList() {
             console.log(error);
         } else {
             setPortfolio(data);
-            // Ako je korisnik prijavljen, provjerite vlasništvo
+            //Provjera da li je korisnik vlasnik
             if (session()) {
                 const ownerStatus = data.map((item) => item.owner_id === session().user.id);
                 setIsOwner(ownerStatus);
             } else {
-                // Ako nije prijavljen, postavite isOwner na prazan niz
                 setIsOwner([]);
             }
         }
     }
 
-    // Funkcija za brisanje portfolija
     async function deletePortfolio(id) {
         if (!session()) {
             setErrorMessage("Potrebna prijava!");
@@ -52,7 +50,7 @@ export default function PortfolioList() {
                 alert("Operacija nije uspjela.");
                 console.log(error);
             } else {
-                await loadPortfolio(); // Ponovno učitaj portfelje nakon brisanja
+                await loadPortfolio();
             }
         }
     }
