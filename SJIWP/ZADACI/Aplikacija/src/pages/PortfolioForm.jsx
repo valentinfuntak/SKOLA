@@ -40,7 +40,10 @@ export default function PortfolioForm() {
         setSuccess(false);
         event.preventDefault();
         const formData = new FormData(event.target);
+
         const owner_id = session().user.id;
+        const title = formData.get("title");
+        const owner = formData.get("author");
 
         const categories = [
             "frontendTechnologies",
@@ -50,9 +53,9 @@ export default function PortfolioForm() {
             "gameDevTechnologies",
             "automationTechnologies"
         ];
-        
+
         const technologies = {};
-        
+
         categories.forEach(category => {
             const selectedTechs = formData.getAll(category);
             if (selectedTechs.length > 0) {
@@ -60,7 +63,6 @@ export default function PortfolioForm() {
             }
         });
 
-        const owner = formData.get("author");
         const about = formData.get("about");
         const education = formData.get("education");
         const experience = formData.get("experience");
@@ -71,6 +73,7 @@ export default function PortfolioForm() {
             .from("portfolios")
             .insert({
                 owner_id: owner_id,
+                title: title,
                 owner: owner,
                 about: about,
                 education: education,
@@ -98,6 +101,20 @@ export default function PortfolioForm() {
                     </div>
 
                     <div class="mt-4 p-4 flex flex-col gap-4 bg-gray-800 rounded-lg shadow-md">
+
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xl font-semibold text-gray-300">
+                                Naslov portfolia:
+                            </label>
+                            <input
+                                type="text"
+                                name="title"
+                                required="true"
+                                placeholder="Unesite naslov portfolia"
+                                class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                        </div>
+
                         {/* Vlasnik portfolia */}
                         <div class="flex flex-col gap-2">
                             <label class="text-xl font-semibold text-gray-300">
@@ -378,12 +395,12 @@ export default function PortfolioForm() {
                         </div>
                         <div class="mt-4">
                             <a href="/portfoliolist">
-                            <button
-                                type="submit"
-                                class="w-full bg-orange-600 text-white p-3 rounded-lg hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                            >
-                                Pregled portfolia
-                            </button>
+                                <button
+                                    type="submit"
+                                    class="w-full bg-orange-600 text-white p-3 rounded-lg hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                >
+                                    Pregled portfolia
+                                </button>
                             </a>
                         </div>
                         <Show when={success()}>
