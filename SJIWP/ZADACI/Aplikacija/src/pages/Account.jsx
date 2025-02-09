@@ -8,7 +8,7 @@ export default function Account() {
 
     const user = session() ? session().user : null;
 
-    console.log(session().user);
+    //console.log(session().user);
 
     if (!user) {
         return (

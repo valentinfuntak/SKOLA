@@ -18,7 +18,7 @@ export function AuthProvider(props) {
     const [loading, setLoading] = createSignal(true);
 
     supabase.auth.onAuthStateChange((event, session) => {
-        console.log(event, session);
+        //console.log(event, session);
         //console.log(apiKey, url);
 
         if (event === "SIGNED_IN" || event === "USER_UPDATED") {
