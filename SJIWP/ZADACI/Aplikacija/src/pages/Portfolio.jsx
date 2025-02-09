@@ -5,7 +5,7 @@ import { supabase } from "../backend/Supabase";
 import brisi from "../assets/delete.png";
 
 export default function Portfolio() {
-    const { id } = useParams();  // Uzimanje ID-a portfolia iz URL-a
+    const id = useParams().id;
     const session = useAuth();
 
     const [portfolio, setPortfolio] = createSignal(null);
