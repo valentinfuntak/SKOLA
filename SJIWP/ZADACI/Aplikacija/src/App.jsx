@@ -11,7 +11,7 @@ import Account from "./pages/Account.jsx";
 import Settings from "./pages/Settings.jsx";
 import PortfolioForm from "./pages/PortfolioForm.jsx";
 import PortfolioList from "./pages/PortfolioList.jsx";
-
+import Portfolio from "./pages/Portfolio.jsx";
 
 export default function App() {
   return (
@@ -24,7 +24,7 @@ export default function App() {
         <Route path="/settings" component={() => (<MainLayout><Settings /></MainLayout>)} />
         <Route path="/portfolioform" component={() => (<MainLayout><PortfolioForm /></MainLayout>)} />
         <Route path="/portfoliolist" component={() => (<MainLayout><PortfolioList /></MainLayout>)} />
-        <Route path="/portfoliolist/:id" component={() => (<MainLayout><PortfolioList /></MainLayout>)} />
+        <Route path="/portfolio/:id" component={() => (<MainLayout><Portfolio /></MainLayout>)} />
       </HashRouter>
     </AuthProvider>
   );

@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { useAuth } from "../backend/AuthProvider.jsx";
 import { supabase } from "../backend/Supabase.js";
 
@@ -35,13 +35,23 @@ import puppeteer from "../assets/Ikone/Automatization/pupe.png";
 export default function PortfolioForm() {
     const session = useAuth();
     const [success, setSuccess] = createSignal(false);
+    const [error, setError] = createSignal(false);
 
     async function formSubmit(event) {
         setSuccess(false);
+        setError(false);
+
         event.preventDefault();
         const formData = new FormData(event.target);
 
+        const sessionData = session();
+        if (!sessionData || !sessionData.user) {
+            setError(true);
+            return;
+        }
+
         const owner_id = session().user.id;
+        
         const title = formData.get("title");
         const owner = formData.get("author");
 
@@ -68,6 +78,7 @@ export default function PortfolioForm() {
         const experience = formData.get("experience");
         const projects = formData.get("projects");
         const contact = formData.get("contact");
+        const certificates = formData.get("certificate");
 
         const { error } = await supabase
             .from("portfolios")
@@ -80,10 +91,12 @@ export default function PortfolioForm() {
                 technologies: technologies,
                 experience: experience,
                 projects: projects,
-                contact: contact
+                contact: contact,
+                certificates: certificates
             });
         if (error) {
             console.error("Error during insert:", error);
+            setError(true);
             alert("Spremanje nije uspjelo.");
         } else {
             setSuccess(true);
@@ -136,7 +149,6 @@ export default function PortfolioForm() {
                                 class="w-full h-40 resize-none bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 maxLength={2000}
                                 name="about"
-                                required="true"
                                 placeholder="Napišite nešto o sebi"
                             />
                         </div>
@@ -144,14 +156,14 @@ export default function PortfolioForm() {
                         {/* Obrazovanje */}
                         <div class="flex flex-col gap-2">
                             <label class="text-xl font-semibold text-gray-300" for="education">Obrazovanje</label>
-                            <select name="education" id="education" required class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select name="education" id="education" class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option class="bg-white text-black" value="">
                                     Odaberite obrazovni program
                                 </option>
-                                <option class="bg-white text-black" value="srednja">
+                                <option class="bg-white text-black" value="Srednja škola - Računarstvo">
                                     Srednja škola - Računarstvo
                                 </option>
-                                <option class="bg-white text-black" value="vss">
+                                <option class="bg-white text-black" value="Sveučilišni prvostupnik/prvostupnica informatike">
                                     Sveučilišni prvostupnik/prvostupnica informatike
                                 </option>
                             </select>
@@ -165,7 +177,6 @@ export default function PortfolioForm() {
                             <input
                                 type="text"
                                 name="certificate"
-                                required="true"
                                 placeholder="Unesite naziv certifikata"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
@@ -352,7 +363,6 @@ export default function PortfolioForm() {
                             <input
                                 type="text"
                                 name="experience"
-                                required="true"
                                 placeholder="Unesite iskustvo"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
@@ -367,7 +377,6 @@ export default function PortfolioForm() {
                                 type="text"
                                 name="projects"
                                 placeholder="Navedite projekte"
-                                required="true"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
@@ -378,7 +387,6 @@ export default function PortfolioForm() {
                             <input
                                 type="tel"
                                 name="contact"
-                                required="true"
                                 placeholder="Unesite kontakt broj"
                                 class="bg-gray-700 text-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
@@ -393,6 +401,7 @@ export default function PortfolioForm() {
                                 Kreirajte portfolio
                             </button>
                         </div>
+
                         <div class="mt-4">
                             <a href="/portfoliolist">
                                 <button
@@ -406,6 +415,11 @@ export default function PortfolioForm() {
                         <Show when={success()}>
                             <div class="bg-green-400 text-white p-4 rounded my-5">
                                 Portfolio uspješno generiran!
+                            </div>
+                        </Show>
+                        <Show when={error()}>
+                        <div class="bg-red-400 text-white p-4 rounded my-5">
+                                Potrebna je prijava!
                             </div>
                         </Show>
                     </div>
