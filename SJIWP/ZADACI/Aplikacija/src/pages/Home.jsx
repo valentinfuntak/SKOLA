@@ -3,21 +3,19 @@ import PortfolioList from "./PortfolioList";
 export default function Home() {
   return (
     <>
-    <div class="hero min-h-screen bg-base-100">
-      <div class="hero-content text-center">
-        <div class="max-w-md">
-          <h1 class="text-5xl font-bold">Dobrodošli na Portfolio Kreator</h1>
-          <p class="py-6">Kreirajte svoj portfolio i pokažite svoje projekte i vještine.</p>
-          <a href="/portfolioform">
-            <button className="bg-indigo-600 p-2 rounded hover:bg-indigo-500 text-l mr-5">Stvori portfolio</button>
+      <div className="hero min-h-screen bg-base-100 flex flex-col items-center justify-center text-center p-4">
+        <h1 className="text-4xl sm:text-5xl font-bold">Dobrodošli na Portfolio Kreator</h1>
+        <p className="py-4 text-lg max-w-md">Kreirajte svoj portfolio i pokažite svoje projekte i vještine.</p>
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <a href="/portfolioform" className="w-full sm:w-auto">
+            <button className="bg-indigo-600 p-3 w-full sm:w-auto rounded hover:bg-indigo-500 text-lg">Stvori portfolio</button>
           </a>
-          <a href="/portfoliolist">
-            <button className="bg-indigo-600 p-2 rounded hover:bg-indigo-500 text-l mr-5">Pregled portfolia</button>
+          <a href="/portfoliolist" className="w-full sm:w-auto">
+            <button className="bg-indigo-600 p-3 w-full sm:w-auto rounded hover:bg-indigo-500 text-lg">Pregled portfolia</button>
           </a>
         </div>
       </div>
-    </div>
-    <PortfolioList />
+      <PortfolioList />
     </>
   );
 }
