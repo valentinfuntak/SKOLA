@@ -136,6 +136,12 @@ export default function PortfolioList() {
                                         </ul>
                                     </div>
 
+                                    {/*ISKUSTVO*/}
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-indigo-300">🛠️ Iskustvo:</h3>
+                                        <p class="text-gray-300 bg-gray-700 p-2 rounded">{item.experience || "Nema iskustva"}</p>
+                                    </div>
+
                                     {/*PROJEKTI*/}
                                     <div>
                                         <h3 class="text-lg font-semibold text-indigo-300">📂 Projekti:</h3>
