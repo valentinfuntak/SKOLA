@@ -1,3 +1,4 @@
+import { format, parse, parseISO} from "date-fns";
 import { createEffect, createSignal, Show, For } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { useAuth } from "../backend/AuthProvider.jsx";
@@ -15,6 +16,13 @@ export default function PortfolioList() {
     createEffect(async () => {
         await loadPortfolio();
     });
+
+    //const formatedDate = format(parse(item.created_at, 'dd.MM.yyyy HH:mm:ss', new Date()));
+
+    const formatedDate = (item) => {
+        const parsedDate = parseISO(item.created_at);
+        return format(parsedDate, "dd.MM.yyyy HH:mm:ss");
+    };
 
     async function loadPortfolio() {
         const { data, error } = await supabase
@@ -143,7 +151,7 @@ export default function PortfolioList() {
                                     {/*DATUM*/}
                                     <div>
                                         <h3 class="text-lg font-semibold text-indigo-300">📅 Datum kreiranja:</h3>
-                                        <p class="text-gray-300 bg-gray-700 p-2 rounded">{item.created_at}</p>
+                                        <p class="text-gray-300 bg-gray-700 p-2 rounded">{formatedDate(item)}</p>
                                     </div>
 
                                     {/*GUMBI*/}

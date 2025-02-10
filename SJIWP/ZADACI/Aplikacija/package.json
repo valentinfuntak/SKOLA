@@ -22,6 +22,7 @@
     "@solidjs/router": "^0.15.3",
     "@supabase/supabase-js": "^2.48.1",
     "daisyui": "^5.0.0-beta.6",
+    "date-fns": "^4.1.0",
     "solid-js": "^1.9.3",
     "tailwindcss": "^4.0.3"
   }
