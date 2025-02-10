@@ -1,4 +1,4 @@
-import { format, parse, parseISO} from "date-fns";
+import { format, parse, parseISO } from "date-fns";
 import { createEffect, createSignal, Show, For } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { useAuth } from "../backend/AuthProvider.jsx";
@@ -98,7 +98,7 @@ export default function PortfolioList() {
 
                                     {/*NASLOV*/}
                                     <h2 class="text-2xl font-bold text-indigo-300">{item.title}</h2>
-                                    
+
                                     {/*AUTOR*/}
                                     <div class="flex items-center gap-2">
                                         <span class="text-lg font-semibold text-gray-300">Autor:</span>
@@ -151,7 +151,11 @@ export default function PortfolioList() {
                                     {/*KONTAKT*/}
                                     <div>
                                         <h3 class="text-lg font-semibold text-indigo-300">📞 Kontakt:</h3>
-                                        <p class="text-gray-300 bg-gray-700 p-2 rounded">{item.contact || "Nema kontakta"}</p>
+                                        <p class="text-gray-300 bg-gray-700 p-2 rounded">
+                                            {item.contact || "Nema kontakta"}
+                                            {item.email ? <><br />{item.email}</> : ""}
+                                        </p>
+
                                     </div>
 
                                     {/*DATUM*/}

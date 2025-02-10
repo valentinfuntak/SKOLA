@@ -48,6 +48,7 @@ export default function PortfolioForm() {
         }
 
         const owner_id = session().user.id;
+        const email = session().user.email;
         
         const title = formData.get("title");
         const owner = formData.get("author");
@@ -81,6 +82,7 @@ export default function PortfolioForm() {
             .from("portfolios")
             .insert({
                 owner_id: owner_id,
+                email: email,
                 title: title,
                 owner: owner,
                 about: about,
