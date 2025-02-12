@@ -112,16 +112,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ),
         ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Text('Dobrodošli, $userName!',
                 style: const TextStyle(fontSize: 24)),
-
             const SizedBox(height: 20),
-
             forma(
               "Koliko je",
               postotakController,
@@ -139,9 +136,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
               },
               rezultat1,
             ),
-
             const SizedBox(height: 16),
-
             forma(
               "Koliki postotak je",
               dioController,
@@ -160,9 +155,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
               rezultat2,
               isPercentage: true,
             ),
-
             const SizedBox(height: 16),
-
             forma(
               "Koji je postotak povećanja/smanjenja od",
               pocetnaVrijednostController,
@@ -184,7 +177,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
               isPercentage: true,
               promjena: true,
             ),
-
           ],
         ),
       ),
