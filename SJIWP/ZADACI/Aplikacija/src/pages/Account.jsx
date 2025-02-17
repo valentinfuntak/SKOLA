@@ -7,13 +7,13 @@ export default function Account() {
     const session = useAuth();
 
     const user = session() ? session().user : null;
-
+    
     //console.log(session().user);
 
     if (!user) {
         return (
             <div class="account-container bg-red-400">
-                <h1 class="text-2xl font-semibold">Niste prijavljeni</h1>
+                <h1 class="text-xl font-semibold">Niste prijavljeni</h1>
                 <p class="mt-2">Morate biti prijavljeni kako biste pristupili svom računu.</p>
             </div>
         );
