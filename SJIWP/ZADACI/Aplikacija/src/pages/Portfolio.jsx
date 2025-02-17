@@ -109,7 +109,7 @@ export default function Portfolio() {
                         <p class="text-gray-300 bg-gray-700 p-2 rounded">{portfolio().created_at}</p>
                     </div>
 
-                    {/* Dugme za brisanje */}
+                    {/* Brisanje */}
                     <div class="w-full flex justify-between items-center mt-3">
                         <Show when={isOwner()}>
                             <button class="bg-red-500 hover:bg-red-400 text-white p-2 rounded-lg flex justify-center items-center transition" onClick={() => deletePortfolio(portfolio().id)}>

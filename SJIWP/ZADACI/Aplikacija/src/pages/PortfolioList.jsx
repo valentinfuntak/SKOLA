@@ -33,7 +33,6 @@ export default function PortfolioList() {
             console.log(error);
         } else {
             setPortfolio(data);
-            //Provjera da li je korisnik vlasnik
             if (session()) {
                 const ownerStatus = data.map((item) => item.owner_id === session().user.id);
                 setIsOwner(ownerStatus);
