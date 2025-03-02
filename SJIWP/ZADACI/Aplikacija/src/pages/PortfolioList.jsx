@@ -12,6 +12,10 @@ export default function PortfolioList() {
     const [portfolio, setPortfolio] = createSignal([]);
     const [errorMessage, setErrorMessage] = createSignal("");
     const [isOwner, setIsOwner] = createSignal([]);
+    const [currentPage, setCurrentPage] = createSignal(1);
+    const itemsPerPage = 3;
+
+
 
     createEffect(async () => {
         await loadPortfolio();
@@ -73,12 +77,19 @@ export default function PortfolioList() {
         }
     };
 
+    const paginiraniPortfoliji = () => {
+        const start = (currentPage() - 1) * itemsPerPage;
+        return portfolio().slice(start, start + itemsPerPage);
+    };
+
+
     return (
         <div class="bg-base-300 w-full mb-5 h-full p-5 mt-5 rounded-2xl">
             <h1 class="text-3xl">Pregled portfolia</h1>
             <Show when={portfolio()}>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <For each={portfolio()} fallback={<div>Nema portfolia.</div>}>
+                    <For each={paginiraniPortfoliji()} fallback={<div>Nema portfolia.</div>}>
+
                         {(item, index) => {
                             let technologies = item.technologies;
 
@@ -189,6 +200,23 @@ export default function PortfolioList() {
                         }}
                     </For>
                 </div>
+                <div class="flex justify-center mt-5 gap-4">
+                        <button
+                            class="bg-gray-600 text-white px-4 py-2 rounded-lg disabled:opacity-50"
+                            disabled={currentPage() === 1}
+                            onClick={() => setCurrentPage(currentPage() - 1)}
+                        >
+                            ← Prethodna
+                        </button>
+                        <span class="text-white text-lg">Stranica {currentPage()}</span>
+                        <button
+                            class="bg-gray-600 text-white px-4 py-2 rounded-lg disabled:opacity-50"
+                            disabled={currentPage() * itemsPerPage >= portfolio().length}
+                            onClick={() => setCurrentPage(currentPage() + 1)}
+                        >
+                            Sljedeća →
+                        </button>
+                    </div>
             </Show>
         </div>
     );
