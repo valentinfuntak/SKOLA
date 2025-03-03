@@ -12,6 +12,7 @@ import Settings from "./pages/Settings.jsx";
 import PortfolioForm from "./pages/PortfolioForm.jsx";
 import PortfolioList from "./pages/PortfolioList.jsx";
 import Portfolio from "./pages/Portfolio.jsx";
+import ProjectForm from "./pages/ProjectForm.jsx";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/portfolioform" component={() => (<MainLayout><PortfolioForm /></MainLayout>)} />
         <Route path="/portfoliolist" component={() => (<MainLayout><PortfolioList /></MainLayout>)} />
         <Route path="/portfolio/:id" component={() => (<MainLayout><Portfolio /></MainLayout>)} />
+        <Route path="/projectsadd" component={() => (<MainLayout><ProjectForm /></MainLayout>)} />
       </HashRouter>
     </AuthProvider>
   );
