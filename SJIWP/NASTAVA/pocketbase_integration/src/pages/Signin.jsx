@@ -20,5 +20,6 @@ export default function Signin() {
                     <input type="submit" value="Pošalji" class="bg-slate-600 text-white p-2 rounded" />
                 </div>
             </form>
-        </>);
+        </>
+    );
 }

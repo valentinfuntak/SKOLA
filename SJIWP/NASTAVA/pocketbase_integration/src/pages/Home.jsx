@@ -1,4 +1,6 @@
 export default function Home() {
 
-    return (<div>Naslovnica</div>);
+    return (
+        <div>Naslovnica</div>
+    );
 }
