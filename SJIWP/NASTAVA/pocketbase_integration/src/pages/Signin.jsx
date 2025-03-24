@@ -1,6 +1,30 @@
+import { createSignal } from "solid-js";
+import { pb } from "../services/pocketbase";
+import { useNavigate } from "@solidjs/router";
+
 export default function Signin() {
 
-    function formSubmit() { }
+    const navigate = useNavigate();
+
+    const [error, setError] = createSignal(false);
+
+
+    async function formSubmit(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const email = formData.get("email");
+        const password = formData.get("password");
+        console.log(`Data: ${email},${password}`);
+
+        try {
+            await pb.collection("users").authWithPassword(email, password);
+            console.log("Signin success");
+            navigate("/")
+        } catch (error) {
+            console.log("Error:", error);
+            setError(true);
+        }
+    }
 
     return (
         <>
@@ -17,9 +41,16 @@ export default function Signin() {
                 </div>
 
                 <div class="p-2 flex flex-col gap-1">
-                    <input type="submit" value="Pošalji" class="bg-slate-600 text-white p-2 rounded" />
+                    <input type="submit" value="Prijava" class="bg-slate-600 text-white p-2 rounded" />
                 </div>
             </form>
+
+            <Show when={error()}>
+                <div class="m-2 p-4 w-md rounded bg-red-600">
+                    Dogodila se greška prilikom prijave, provjerite svoju e-mail adresu i/ili zaporku.
+                </div>
+            </Show>
+
         </>
     );
 }
