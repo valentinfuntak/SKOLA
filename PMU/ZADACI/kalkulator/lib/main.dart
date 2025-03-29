@@ -1,6 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+import 'package:path/path.dart' as p;
 
 void main() {
+  if (kIsWeb) {
+    databaseFactory = databaseFactoryFfiWeb;
+  }
   runApp(const MainApp());
 }
 
@@ -15,6 +24,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomePage(),
         '/calculator': (context) => const CalculatorPage(),
+        '/history': (context) => const HistoryPage(),
       },
     );
   }
@@ -94,6 +104,21 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
   double? rezultat1, rezultat2, rezultat3;
 
+  //INSTANCA BAZE ZA POVIJEST KONVERZIJA
+  final ConversionDatabaseHelper _convDb = ConversionDatabaseHelper.instance;
+
+  //FUNCKIJA ZA SPREMANJE POVIJESTI IZRAČUNA U BP
+  Future<void> _saveConversion(
+      String operation, String input, double result) async {
+    final history = ConversionHistory(
+      date: DateTime.now(),
+      operation: operation,
+      input: input,
+      result: result,
+    );
+    await _convDb.insert(history);
+  }
+
   @override
   Widget build(BuildContext context) {
     final String userName =
@@ -103,6 +128,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
       appBar: AppBar(
         title: const Text('Kalkulator Postotka'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            tooltip: "Povijest konverzija",
+            onPressed: () => Navigator.pushNamed(context, '/history'),
+          ),
           ElevatedButton.icon(
             onPressed: () => Navigator.pushReplacementNamed(context, '/'),
             icon: const Icon(Icons.logout),
@@ -132,6 +162,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     double ukupno = double.parse(brojController.text);
                     rezultat1 = (postotak / 100) * ukupno;
                   });
+                  _saveConversion(
+                      "Postotak od",
+                      "${postotakController.text}% od ${brojController.text}",
+                      rezultat1!);
                 }
               },
               rezultat1,
@@ -150,6 +184,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     double ukupno = double.parse(ukupnoController.text);
                     rezultat2 = (dio / ukupno) * 100;
                   });
+                  _saveConversion(
+                      "Dio u postotcima",
+                      "${dioController.text} od ${ukupnoController.text}",
+                      rezultat2!);
                 }
               },
               rezultat2,
@@ -171,6 +209,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         double.parse(krajnjaVrijednostController.text);
                     rezultat3 = ((krajnja - pocetna) / pocetna) * 100;
                   });
+                  _saveConversion(
+                      "Promjena vrijednosti",
+                      "${pocetnaVrijednostController.text} na ${krajnjaVrijednostController.text}",
+                      rezultat3!);
                 }
               },
               rezultat3,
@@ -183,7 +225,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
     );
   }
 
-  //TAMEPLATE ZA FORMU
+  // TEMPLATE ZA FORMU
   Widget forma(
     String label,
     TextEditingController controller1,
@@ -272,5 +314,193 @@ class _CalculatorPageState extends State<CalculatorPage> {
         ),
       ),
     );
+  }
+}
+
+// STRANICA ZA PRIKAZ POVIJESTI KONVERZIJA
+class HistoryPage extends StatefulWidget {
+  const HistoryPage({super.key});
+
+  @override
+  _HistoryPageState createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
+  final ConversionDatabaseHelper _convDb = ConversionDatabaseHelper.instance;
+  late Future<List<ConversionHistory>> _historyFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
+
+  void _loadHistory() {
+    _historyFuture = _convDb.getAll();
+  }
+
+  Future<void> _deleteEntry(int id) async {
+    await _convDb.delete(id);
+    setState(() {
+      _loadHistory();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Povijest Konverzija'),
+      ),
+      body: FutureBuilder<List<ConversionHistory>>(
+        future: _historyFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Greška: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Nema spremljenih konverzija.'));
+          } else {
+            final historyList = snapshot.data!;
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: historyList.length,
+              itemBuilder: (context, index) {
+                final entry = historyList[index];
+                return Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blue.shade100,
+                      child: const Icon(Icons.calculate, color: Colors.blue),
+                    ),
+                    title: Text(
+                      entry.operation,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 8),
+                        Text(
+                          DateFormat.yMMMd().add_jm().format(entry.date),
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                        const SizedBox(height: 4),
+                        Text("Unos: ${entry.input}"),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Rezultat: ${entry.result.toStringAsFixed(2)}",
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () => _deleteEntry(entry.id!),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+// MODEL ZA POVIJEST KONVERZIJA
+class ConversionHistory {
+  final int? id;
+  final DateTime date;
+  final String operation;
+  final String input;
+  final double result;
+
+  ConversionHistory({
+    this.id,
+    required this.date,
+    required this.operation,
+    required this.input,
+    required this.result,
+  });
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'date': date.millisecondsSinceEpoch,
+        'operation': operation,
+        'input': input,
+        'result': result,
+      };
+
+  factory ConversionHistory.fromMap(Map<String, dynamic> map) => ConversionHistory(
+        id: map['id'],
+        date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+        operation: map['operation'],
+        input: map['input'],
+        result: map['result'],
+      );
+}
+
+// POMOĆNA KLASA ZA BAZU PODATAKA (POVIJEST KONVERZIJA)
+class ConversionDatabaseHelper {
+  static final ConversionDatabaseHelper instance = ConversionDatabaseHelper._init();
+  static Database? _database;
+
+  ConversionDatabaseHelper._init();
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDB('conversion_history.db');
+    return _database!;
+  }
+
+  Future<Database> _initDB(String filePath) async {
+    final dbPath = await getDatabasesPath();
+    final path = p.join(dbPath, filePath);
+
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE conversion_history(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date INTEGER NOT NULL,
+            operation TEXT NOT NULL,
+            input TEXT NOT NULL,
+            result REAL NOT NULL
+          )
+        ''');
+      },
+    );
+  }
+
+  Future<int> insert(ConversionHistory history) async {
+    final db = await database;
+    return await db.insert('conversion_history', history.toMap());
+  }
+
+  Future<List<ConversionHistory>> getAll() async {
+    final db = await database;
+    final result = await db.query('conversion_history', orderBy: 'date DESC');
+    return result.map((map) => ConversionHistory.fromMap(map)).toList();
+  }
+
+  Future<int> delete(int id) async {
+    final db = await database;
+    return await db.delete('conversion_history', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future close() async {
+    final db = await database;
+    db.close();
   }
 }

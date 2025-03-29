@@ -9,7 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: ^2.2.0+3
+  sqflite: ^2.2.8
+  sqflite_common_ffi: ^2.3.0
+  sqflite_common_ffi_web: ^0.4.4
   path: ^1.8.0
   intl: ^0.18.0
 
