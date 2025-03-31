@@ -1,10 +1,9 @@
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { pb } from "../services/pocketbase";
 
 export default function Signup() {
-
     const [error, setError] = createSignal(false);
-    const [seccuess, setSeccuess] = createSignal(false);
+    const [success, setSuccess] = createSignal(false);
 
     async function formSubmit(event) {
         event.preventDefault();
@@ -12,23 +11,21 @@ export default function Signup() {
         const name = formData.get("name");
         const email = formData.get("email");
         const password = formData.get("password");
-        const confirmpassword = formData.get("confirmpassword");
-        //console.log(`Data: ${email},${password}`);
+        const passwordConfirm = formData.get("passwordConfirm");
 
-        if (password !== confirmpassword) {
-            console.log("Error", error)
+        if (password !== passwordConfirm) {
             setError(true);
             return;
         }
 
         try {
             await pb.collection("users").create({
-                name, email, password, confirmpassword
-            })
-            //BREVO await pb.collection("users").requestVerification(email);
-            setSeccuess(true);
+                name, email, password, passwordConfirm
+            });
+            // await pb.collection("user").requestVerification(email);
+            setSuccess(true);
         } catch (error) {
-            console.log("Error:", error);
+            console.log("Error", error);
             setError(true);
         }
     }
@@ -36,12 +33,14 @@ export default function Signup() {
     return (
         <>
             <div class="text-3xl font-mono font-bold p-2">Registracija korisnika</div>
-            <Show when={seccuess}>
+
+            <Show when={!success()}>
                 <form onSubmit={formSubmit} class="w-md">
                     <div class="p-2 flex flex-col gap-1">
                         <label>Ime</label>
                         <input class="border rounded p-2" type="text" name="name" required="true" />
                     </div>
+
                     <div class="p-2 flex flex-col gap-1">
                         <label>E-mail</label>
                         <input class="border rounded p-2" type="email" name="email" required="true" />
@@ -54,7 +53,7 @@ export default function Signup() {
 
                     <div class="p-2 flex flex-col gap-1">
                         <label>Potvrda zaporke</label>
-                        <input class="border rounded p-2" type="password" name="confirmpassword" required="true" min="6" />
+                        <input class="border rounded p-2" type="password" name="passwordConfirm" required="true" min="6" />
                     </div>
 
                     <div class="p-2 flex flex-col gap-1">
@@ -63,18 +62,16 @@ export default function Signup() {
                 </form>
             </Show>
 
-            <Show when={seccuess()}>
-            <div class="m-2 p-4 w-md rounded bg-green-700">
-                    USpješno ste se registrirali na aplikaciju.
+            <Show when={success()}>
+                <div class="m-2 p-4 rounded bg-emerald-500 w-md">
+                    Uspješno ste se registrirali na aplikaciju.
                 </div>
             </Show>
 
             <Show when={error()}>
-                <div class="m-2 p-4 w-md rounded bg-red-600">
+                <div class="m-2 p-4 rounded bg-red-300 w-md">
                     Dogodila se greška prilikom stvaranja korisničkog računa, provjerite svoje podatke.
                 </div>
             </Show>
-
-        </>
-    );
+        </>);
 }

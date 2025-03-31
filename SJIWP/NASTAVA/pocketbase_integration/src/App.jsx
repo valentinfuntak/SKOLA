@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Signout from "./pages/Signout";
 import Error from "./pages/Error";
+import Events from "./pages/Events"
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/signup" component={Signup} />
         <Route path="/signin" component={Signin} />
         <Route path="/signout" component={Signout} />
+        <Route path="/events" component={Events} />
         <Route path="/error" component={Error} />
         <Route path="*" component={() => <Navigate href="/error" />} />
       </Router>
@@ -37,9 +39,16 @@ function Layout(props) {
         </div>
 
         <nav class="flex-1 flex gap-2 justify-end">
-          <Show when={user()}>
-            <A class="p-2 bg-red-500 text-gray-50 font-bold rounded hover:brightness-90" href="/signout">Odjava</A>
-          </Show>
+        <Show when={user()}>
+              <Show when={user().role === "admin"}>
+                <A class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg shadow-md hover:bg-blue-600 transition" href="/Events">
+                  Događaji
+                </A>
+              </Show>
+              <A class="px-4 py-2 bg-red-500 text-white font-medium rounded-lg shadow-md hover:bg-red-600 transition" href="/signout">
+                Odjava
+              </A>
+            </Show>
           <Show when={!user()}>
             <A class="p-2 bg-amber-500 text-gray-50 font-bold rounded hover:brightness-90" href="/signin">Prijava</A>
             <A class="p-2 bg-blue-500 text-gray-50 font-bold rounded hover:brightness-90" href="/signup">Registracija</A>
