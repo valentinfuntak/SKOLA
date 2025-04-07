@@ -440,7 +440,8 @@ class ConversionHistory {
         'result': result,
       };
 
-  factory ConversionHistory.fromMap(Map<String, dynamic> map) => ConversionHistory(
+  factory ConversionHistory.fromMap(Map<String, dynamic> map) =>
+      ConversionHistory(
         id: map['id'],
         date: DateTime.fromMillisecondsSinceEpoch(map['date']),
         operation: map['operation'],
@@ -451,7 +452,8 @@ class ConversionHistory {
 
 // POMOĆNA KLASA ZA BAZU PODATAKA (POVIJEST KONVERZIJA)
 class ConversionDatabaseHelper {
-  static final ConversionDatabaseHelper instance = ConversionDatabaseHelper._init();
+  static final ConversionDatabaseHelper instance =
+      ConversionDatabaseHelper._init();
   static Database? _database;
 
   ConversionDatabaseHelper._init();
@@ -496,7 +498,8 @@ class ConversionDatabaseHelper {
 
   Future<int> delete(int id) async {
     final db = await database;
-    return await db.delete('conversion_history', where: 'id = ?', whereArgs: [id]);
+    return await db
+        .delete('conversion_history', where: 'id = ?', whereArgs: [id]);
   }
 
   Future close() async {

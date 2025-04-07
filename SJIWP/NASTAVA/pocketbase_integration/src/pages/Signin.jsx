@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import { pb } from "../services/pocketbase";
 import { useNavigate } from "@solidjs/router";
+import AlertMessage from "../components/AlertMessage";
 
 export default function Signin() {
 
@@ -46,9 +47,7 @@ export default function Signin() {
             </form>
 
             <Show when={error()}>
-                <div class="m-2 p-4 w-md rounded bg-red-600">
-                    Dogodila se greška prilikom prijave, provjerite svoju e-mail adresu i/ili zaporku.
-                </div>
+                <AlertMessage message="Dogodila se greška prilikom prijave, provjerite svoju e-mail adresu i/ili zaporku."/>
             </Show>
 
         </>
