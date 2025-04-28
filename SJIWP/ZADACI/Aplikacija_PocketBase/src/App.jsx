@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import styles from './App.module.css';
+import { HashRouter, Route } from "@solidjs/router";
+import { AuthProvider } from "./components/AuthProvider";
 
-function App() {
+import MainLayout from "./layout/MainLayout.jsx";
+import RegLogLayout from "./layout/RegLogLayout.jsx";
+
+import SignUp from "./pages/SignUp.jsx"
+import SignIn from "./pages/SignIn.jsx"
+import Home from "./pages/Home.jsx";
+
+
+export default function App() {
   return (
-    <div class={styles.App}>
-      <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <HashRouter>
+        <Route path="/signup" component={() => (<RegLogLayout><SignUp /></RegLogLayout>)} />
+        <Route path="/signin" component={() => (<RegLogLayout><SignIn /></RegLogLayout>)} />
+        <Route path="/" component={() => (<MainLayout><Home /></MainLayout>)} />
+        <Route path="/account" component={() => (<MainLayout><Account /></MainLayout>)} />
+        <Route path="/settings" component={() => (<MainLayout><Settings /></MainLayout>)} />
+        <Route path="/portfolioform" component={() => (<MainLayout><PortfolioForm /></MainLayout>)} />
+        <Route path="/portfoliolist" component={() => (<MainLayout><PortfolioList /></MainLayout>)} />
+        <Route path="/portfolio/:id" component={() => (<MainLayout><Portfolio /></MainLayout>)} />
+        <Route path="/projectsadd" component={() => (<MainLayout><ProjectForm /></MainLayout>)} />
+      </HashRouter>
+    </AuthProvider>
   );
 }
-
-export default App;
