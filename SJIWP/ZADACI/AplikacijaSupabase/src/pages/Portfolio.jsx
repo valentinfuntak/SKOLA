@@ -1,7 +1,7 @@
 import { createEffect, createSignal, Show } from "solid-js";
 import { useParams } from "@solidjs/router";
 import { useAuth } from "../backend/AuthProvider.jsx";
-import { supabase } from "../backend/Supabase";
+import { supabase } from "../backend/Supabase.js";
 import brisi from "../assets/delete.png";
 
 export default function Portfolio() {

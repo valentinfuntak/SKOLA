@@ -2,7 +2,7 @@ import { format, parse, parseISO } from "date-fns";
 import { createEffect, createSignal, Show, For } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { useAuth } from "../backend/AuthProvider.jsx";
-import { supabase } from "../backend/Supabase";
+import { supabase } from "../backend/Supabase.js";
 import brisi from "../assets/delete.png";
 
 export default function PortfolioList() {
