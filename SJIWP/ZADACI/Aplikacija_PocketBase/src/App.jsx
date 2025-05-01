@@ -1,5 +1,5 @@
-import { HashRouter, Route } from "@solidjs/router";
-import { AuthProvider } from "./components/AuthProvider";
+import { HashRouter, Route} from "@solidjs/router";
+import { AuthProvider} from "./components/AuthProvider.jsx";
 
 import MainLayout from "./layout/MainLayout.jsx";
 import RegLogLayout from "./layout/RegLogLayout.jsx";
@@ -7,7 +7,12 @@ import RegLogLayout from "./layout/RegLogLayout.jsx";
 import SignUp from "./pages/SignUp.jsx"
 import SignIn from "./pages/SignIn.jsx"
 import Home from "./pages/Home.jsx";
-
+import Account from "./pages/Account.jsx";
+import Settings from "./pages/Settings.jsx";
+import PortfolioForm from "./pages/PortfolioForm.jsx";
+import PortfolioList from "./pages/PortfolioList.jsx";
+import Portfolio from "./pages/Portfolio.jsx";
+import ProjectForm from "./pages/ProjectForm.jsx";
 
 export default function App() {
   return (

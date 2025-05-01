@@ -1,3 +1,5 @@
+import PortfolioList from "./PortfolioList"; 
+
 export default function Home() {
   return (
     <>
@@ -13,6 +15,7 @@ export default function Home() {
           </a>
         </div>
       </div>
+      <PortfolioList />
     </>
   );
 }
