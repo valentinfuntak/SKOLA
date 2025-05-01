@@ -30,29 +30,29 @@ import cpp from "../assets/Ikone/GameDev/cp.png";
 import puppeteer from "../assets/Ikone/Automatization/pupe.png";
 
 export default function PortfolioForm() {
-    const session = useAuth();
+    const user = useAuth();
     const [success, setSuccess] = createSignal(false);
     const [error, setError] = createSignal(false);
 
     async function formSubmit(event) {
         setSuccess(false);
         setError(false);
-    
+
         event.preventDefault();
         const formData = new FormData(event.target);
-    
-        const sessionData = session();
-        if (!sessionData || !sessionData.user) {
+
+        const currentUser = user();
+        if (!currentUser) {
             setError(true);
             return;
         }
-    
-        const owner_id = session().user.id;
-        const email = session().user.email;
-        
+
+        const owner_id = currentUser.id;
+        const email = currentUser.email;
+
         const title = formData.get("title");
         const owner = formData.get("author");
-    
+
         const categories = [
             "frontendTechnologies",
             "backendTechnologies",
@@ -61,37 +61,38 @@ export default function PortfolioForm() {
             "gameDevTechnologies",
             "automationTechnologies"
         ];
-    
+
         const technologies = {};
-    
+
         categories.forEach(category => {
             const selectedTechs = formData.getAll(category);
             if (selectedTechs.length > 0) {
                 technologies[category.replace("Technologies", "").toLowerCase()] = selectedTechs;
             }
         });
-    
+
         const about = formData.get("about");
         const education = formData.get("education");
         const experience = formData.get("experience");
         const projects = formData.get("projects");
         const contact = formData.get("contact");
         const certificates = formData.get("certificate");
-    
+
         try {
-            const record = await pb.collection("portfolios").create({
-                owner_id: owner_id,
-                email: email,
-                title: title,
-                owner: owner,
-                about: about,
-                education: education,
-                technologies: technologies,
-                experience: experience,
-                projects: projects,
-                contact: contact,
-                certificates: certificates
+            await pb.collection("portfolios").create({
+                owner_id,
+                email,
+                title,
+                owner,
+                about,
+                education,
+                technologies,
+                experience,
+                projects,
+                contact,
+                certificates
             });
+
             setSuccess(true);
             event.target.reset();
         } catch (error) {

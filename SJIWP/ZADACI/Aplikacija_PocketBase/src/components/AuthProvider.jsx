@@ -15,20 +15,15 @@ export function AuthProvider(props) {
     const [loading, setLoading] = createSignal(true);
 
     onMount(async () => {
-        // Provjera ima li spremljene sesije
-        if (pb.authStore.isValid) {
-            try {
-                const result = await pb.collection("users").authRefresh();
-                setUser(result.record);
-            } catch (error) {
-                console.warn("Neuspješan authRefresh:", error.message);
-                pb.authStore.clear(); // očisti pokvarenu sesiju
-                setUser(null);
-            }
-        } else {
-            setUser(null); // korisnik nije prijavljen
+        try {
+            const result = await pb.collection("users").authRefresh();
+            const userData = result.record;
+            setUser(userData);
+        } catch (error) {
+            setUser(null);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     });
 
     pb.authStore.onChange((token, model) => {
@@ -37,9 +32,7 @@ export function AuthProvider(props) {
 
     return (
         <Show when={!loading()}>
-            <AuthContext.Provider value={user}>
-                {props.children}
-            </AuthContext.Provider>
+            <AuthContext.Provider value={user}>{props.children}</AuthContext.Provider>
         </Show>
     );
 }

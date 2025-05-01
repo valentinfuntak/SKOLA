@@ -1,13 +1,11 @@
 import { createEffect, createSignal, Show } from "solid-js";
 import { useParams, useNavigate } from "@solidjs/router";
-import { useAuth } from "../components/AuthProvider";
 import { pb } from "../services/pocketbase";
 import brisi from "../assets/delete.png";
 
 export default function Portfolio() {
     const id = useParams().id;
     const navigate = useNavigate();
-    const session = useAuth();
 
     const [portfolio, setPortfolio] = createSignal(null);
     const [errorMessage, setErrorMessage] = createSignal("");
@@ -21,10 +19,7 @@ export default function Portfolio() {
         try {
             const record = await pb.collection("portfolios").getOne(id);
             setPortfolio(record);
-
-            if (session()) {
-                setIsOwner(record.owner_id === session().user.id);
-            }
+            setIsOwner(record.owner_id === record.owner_id);  // Uklonjena provjera za sesiju
         } catch (error) {
             alert("Operacija nije uspjela.");
             console.log(error);
@@ -32,19 +27,13 @@ export default function Portfolio() {
     }
 
     async function deletePortfolio(id) {
-        if (!session()) {
-            setErrorMessage("Potrebna prijava!");
-            setTimeout(() => {
-                setErrorMessage("");
-            }, 3000);
-        } else {
-            try {
-                await pb.collection("portfolios").delete(id);
-                navigate("/portfolio-list");
-            } catch (error) {
-                alert("Operacija nije uspjela.");
-                console.log(error);
-            }
+        try {
+            await pb.collection("portfolios").delete(id);
+            // Odmah preusmjeri na listu portfolija nakon brisanja
+            navigate("/portfoliolist");
+        } catch (error) {
+            alert("Operacija nije uspjela.");
+            console.log(error);
         }
     }
 

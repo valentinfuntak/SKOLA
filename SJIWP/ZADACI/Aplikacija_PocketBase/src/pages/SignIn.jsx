@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
-import { pb } from "../services/pocketbase"; // pretpostavlja se da je pb = new PocketBase('...')
+import { pb } from "../services/pocketbase";
 
 function Prijava(props) {
     const [email, setEmail] = createSignal('');
@@ -14,10 +14,10 @@ function Prijava(props) {
         e.preventDefault();
         setLoading(true);
         setError('');
-
+    
         try {
             await pb.collection('users').authWithPassword(email(), password());
-            navigate('/'); // Preusmjeravanje na početnu
+            window.location.href = '/'; // Preusmjeravanje + reload
         } catch (err) {
             const message = err?.response?.message || err?.message || 'Došlo je do pogreške pri prijavi.';
             setError(message);
@@ -26,6 +26,7 @@ function Prijava(props) {
             setLoading(false);
         }
     };
+    
 
     return (
         <section class="bg-base-200">

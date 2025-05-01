@@ -29,9 +29,10 @@ export default function PortfolioList() {
             const records = await pb.collection("portfolios").getFullList({
                 sort: "-created",
             });
+            console.log("Portfolios loaded:", records);
             setPortfolio(records);
 
-            if (session()) {
+            if (session() && session().user) {
                 const ownerStatus = records.map(
                     (item) => item.owner_id === session().user.id
                 );
@@ -85,6 +86,8 @@ export default function PortfolioList() {
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <For each={paginiraniPortfoliji()} fallback={<div>Nema portfolia.</div>}>
                         {(item, index) => {
+
+
                             let technologies = item.technologies;
 
                             if (typeof technologies === "string") {

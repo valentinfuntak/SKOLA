@@ -12,12 +12,13 @@ export default function MainLayout(props) {
 
   const handleLogout = () => {
     try {
-      pb.authStore.clear();
-      navigate("/");
+        pb.authStore.clear(); // Očisti auth sesiju
+        window.location.reload(); // Ponovno učitaj stranicu
     } catch (error) {
-      alert("Nažalost Vas ne možemo odjaviti: " + error.message);
+        alert("Nažalost Vas ne možemo odjaviti: " + error.message);
     }
-  };
+};
+
 
   return (
     <>
@@ -36,6 +37,7 @@ export default function MainLayout(props) {
               <li><a href="/" class=" text-xl">Početna</a></li>
               <li><a href="/portfoliolist" class=" text-xl">Pregled</a></li>
               <li><a href="/portfolioform" class=" text-xl">Izrada</a></li>
+              <li><a href="/settings" class="text-xl">Postavke</a></li>
             </ul>
           </div>
         </div>

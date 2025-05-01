@@ -1,6 +1,6 @@
 import { useNavigate, A } from "@solidjs/router";
 import { createSignal } from 'solid-js';
-import { pb } from "../services/pocketbase"; // pretpostavlja se da pb = new PocketBase('...')
+import { pb } from "../services/pocketbase";
 
 function SignUp(props) {
   const navigate = useNavigate();
@@ -9,6 +9,7 @@ function SignUp(props) {
     email: '',
     password: '',
     confirmPassword: '',
+    name: '',  // Dodano polje za ime
     error: '',
     loading: false,
     success: false
@@ -23,11 +24,17 @@ function SignUp(props) {
       return;
     }
 
+    if (!result().name) {
+      setResult({ ...result(), error: 'Ime je obavezno!', loading: false });
+      return;
+    }
+
     try {
       const userData = {
         email: result().email,
         password: result().password,
         passwordConfirm: result().confirmPassword,
+        name: result().name,  // Dodano ime korisnika
       };
 
       await pb.collection('users').create(userData);
@@ -51,6 +58,20 @@ function SignUp(props) {
               Registracija
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleRegistration}>
+              <div>
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-white">
+                  Ime
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Vaše ime"
+                  value={result().name}
+                  onInput={(e) => setResult({ ...result(), name: e.target.value })}
+                  required
+                />
+              </div>
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-white">
                   E-mail
